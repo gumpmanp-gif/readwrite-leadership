@@ -1,0 +1,471 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Read & Write: A Student Experience</title>
+<style>
+  :root{
+    --green:#4a8844;
+    --green-dark:#356b32;
+    --gold:#f0bd2f;
+    --ink:#2d3a3f;
+    --muted:#66757d;
+    --paper:#ffffff;
+    --soft:#f6f8f6;
+    --soft-gold:#fff8df;
+    --line:#dfe6df;
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    margin:0;
+    font-family:"Trebuchet MS", Arial, Helvetica, sans-serif;
+    color:var(--ink);
+    background:#eef2ed;
+    line-height:1.6;
+  }
+  a{color:inherit}
+  .page{
+    max-width:1040px;
+    margin:0 auto;
+    background:var(--paper);
+    min-height:100vh;
+  }
+  .hero{
+    padding:2.2rem 1.5rem 2.7rem;
+    text-align:center;
+    background:linear-gradient(180deg,var(--green) 0%,var(--green-dark) 100%);
+    color:white;
+  }
+  .hero-badge{
+    display:inline-block;
+    padding:.45rem .8rem;
+    border:1px solid rgba(255,255,255,.5);
+    border-radius:999px;
+    font-size:.8rem;
+    letter-spacing:.08em;
+    text-transform:uppercase;
+    margin-bottom:1rem;
+  }
+  .hero-message{
+    margin:0 auto .9rem;
+    max-width:720px;
+    color:var(--gold);
+    font-size:clamp(2rem,6vw,4rem);
+    line-height:1.06;
+    font-weight:700;
+  }
+  .hero h1{
+    margin:.9rem 0 .4rem;
+    font-size:clamp(1.6rem,4vw,2.7rem);
+    font-weight:500;
+  }
+  .hero p{
+    margin:.35rem auto 0;
+    max-width:760px;
+    font-size:1rem;
+    opacity:.96;
+  }
+
+  .nav-wrap{
+    position:sticky;
+    top:0;
+    z-index:10;
+    background:white;
+    border-bottom:1px solid var(--line);
+  }
+  nav{
+    max-width:1000px;
+    margin:auto;
+    display:flex;
+    gap:.5rem;
+    padding:.7rem 1rem;
+    overflow-x:auto;
+  }
+  nav a{
+    white-space:nowrap;
+    text-decoration:none;
+    padding:.55rem .75rem;
+    border-radius:999px;
+    background:var(--soft);
+    font-size:.88rem;
+    font-weight:700;
+  }
+  nav a:hover, nav a:focus{
+    background:var(--soft-gold);
+    outline:2px solid var(--gold);
+    outline-offset:1px;
+  }
+
+  main{
+    max-width:900px;
+    margin:0 auto;
+    padding:2rem 1.25rem 4rem;
+  }
+  .overview{
+    margin-top:.25rem;
+    padding:1.4rem 1.5rem;
+    background:var(--soft);
+    border-left:7px solid var(--green);
+    border-radius:12px;
+  }
+  .overview strong{color:var(--green-dark)}
+
+  section{
+    margin:3.3rem 0;
+    scroll-margin-top:5.5rem;
+  }
+  .section-label{
+    display:inline-block;
+    color:var(--green-dark);
+    font-weight:700;
+    letter-spacing:.07em;
+    text-transform:uppercase;
+    font-size:.78rem;
+    margin-bottom:.35rem;
+  }
+  h2{
+    margin:.1rem 0 .45rem;
+    font-size:clamp(1.55rem,3vw,2.1rem);
+    color:var(--green-dark);
+    line-height:1.2;
+  }
+  .section-rule{
+    width:100%;
+    height:4px;
+    background:linear-gradient(90deg,var(--gold) 0 24%, transparent 24% 100%);
+    border-top:1px solid var(--line);
+    margin:.7rem 0 1.25rem;
+  }
+  h3{
+    margin:.2rem 0 .5rem;
+    color:var(--ink);
+    font-size:1.1rem;
+  }
+
+  .instruction{
+    background:var(--soft-gold);
+    border-left:6px solid var(--gold);
+    padding:1rem 1.1rem;
+    border-radius:10px;
+    margin:1rem 0 1.2rem;
+  }
+  .instruction strong{color:var(--green-dark)}
+
+  .reading{
+    font-family:Georgia, "Times New Roman", serif;
+    font-size:1.08rem;
+    background:white;
+    border:1px solid var(--line);
+    border-radius:12px;
+    padding:1.25rem 1.35rem;
+  }
+
+  .tool-row{
+    display:flex;
+    flex-wrap:wrap;
+    gap:.55rem;
+    margin:1rem 0;
+  }
+  .tool-chip{
+    background:var(--green);
+    color:white;
+    border-radius:999px;
+    padding:.45rem .75rem;
+    font-weight:700;
+    font-size:.9rem;
+  }
+  .word-bank{
+    margin-top:.75rem;
+    padding:.9rem 1rem;
+    border-radius:10px;
+    background:var(--soft);
+    border:1px solid var(--line);
+  }
+  .word-bank strong{color:var(--green-dark)}
+
+  .two-col,.three-col{
+    display:grid;
+    gap:1rem;
+  }
+  .two-col{grid-template-columns:1fr 1fr}
+  .three-col{grid-template-columns:repeat(3,1fr)}
+  .card{
+    border:1px solid var(--line);
+    border-radius:12px;
+    padding:1rem 1.05rem;
+    background:white;
+  }
+  .card h3{
+    color:var(--green-dark);
+    border-bottom:2px solid var(--gold);
+    padding-bottom:.45rem;
+  }
+  .card p{margin-bottom:0}
+
+  label{
+    display:block;
+    font-weight:700;
+    margin:.8rem 0 .35rem;
+    color:var(--green-dark);
+  }
+  textarea{
+    display:block;
+    width:100%;
+    min-height:135px;
+    border:1.5px solid #9cab9e;
+    border-radius:10px;
+    padding:.8rem;
+    font:inherit;
+    color:var(--ink);
+    background:white;
+  }
+  textarea:focus{
+    outline:3px solid rgba(240,189,47,.35);
+    border-color:var(--green);
+  }
+  .response-box{
+    margin-top:1rem;
+    padding:1rem;
+    border-radius:12px;
+    background:var(--soft);
+    border:1px solid var(--line);
+  }
+
+  .leadership{
+    margin:1.4rem 0 0;
+    background:var(--green-dark);
+    color:white;
+    padding:1.1rem 1.2rem;
+    border-radius:12px;
+  }
+  .leadership strong{color:var(--gold)}
+
+  table{
+    width:100%;
+    border-collapse:separate;
+    border-spacing:0;
+    overflow:hidden;
+    border:1px solid var(--line);
+    border-radius:12px;
+  }
+  th,td{
+    padding:.8rem;
+    text-align:left;
+    vertical-align:top;
+    border-bottom:1px solid var(--line);
+  }
+  th{
+    background:var(--green-dark);
+    color:white;
+  }
+  tr:last-child td{border-bottom:0}
+  td:first-child{font-weight:700;color:var(--green-dark);width:34%}
+
+  footer{
+    background:var(--green);
+    color:white;
+    text-align:center;
+    padding:1.5rem 1rem 2rem;
+  }
+  footer .big{
+    display:block;
+    color:var(--gold);
+    font-weight:700;
+    font-size:1.2rem;
+    margin-bottom:.25rem;
+  }
+
+  .print-note{
+    color:var(--muted);
+    font-size:.84rem;
+    margin-top:.8rem;
+  }
+
+  @media (max-width:760px){
+    .two-col,.three-col{grid-template-columns:1fr}
+    main{padding:1.35rem .9rem 3rem}
+    .reading{font-size:1rem}
+  }
+
+  @media print{
+    body{background:white}
+    .page{max-width:none}
+    .nav-wrap{display:none}
+    section{break-inside:avoid}
+    textarea{min-height:100px}
+    .hero{padding:1rem}
+  }
+</style>
+</head>
+<body>
+<div class="page">
+  <header class="hero">
+    <div class="hero-badge">District Leadership Experience</div>
+    <div class="hero-message">Same Standard<br>Same Expectation<br>Different Access</div>
+    <h1>Read &amp; Write: A Student Experience</h1>
+    <p>Experience grade-level tasks first as a learner, then use Read&amp;Write tools to reduce barriers while keeping the instructional expectation intact.</p>
+  </header>
+
+  <div class="nav-wrap">
+    <nav aria-label="Activity navigation">
+      <a href="#overview">Overview</a>
+      <a href="#activity1">1 • Grade 7 ELA</a>
+      <a href="#activity2">2 • Compare &amp; Contrast</a>
+      <a href="#activity3">3 • Social Studies</a>
+      <a href="#activity4">4 • Biology</a>
+      <a href="#reference">Tool Reference</a>
+    </nav>
+  </div>
+
+  <main>
+    <section id="overview">
+      <div class="overview">
+        <strong>Participant Overview</strong>
+        <p>This hands-on participant guide allows district leaders to experience Read&amp;Write through the lens of a student engaging with grade-level instruction. Using activities aligned to Georgia standards in English Language Arts, Social Studies, and Biology, participants explore how specific Read&amp;Write tools can reduce barriers to reading, vocabulary development, organization, and written expression.</p>
+        <p>Participants move through authentic instructional tasks using Text-to-Speech, Dictionary and Picture Dictionary, Highlighters and Collect Highlights, Vocabulary List, Talk&amp;Type, Rewordify, and Simplify. Each activity demonstrates how technology can provide a different pathway to accessing and demonstrating learning while maintaining the same grade-level standard and instructional expectation.</p>
+      </div>
+    </section>
+
+    <section id="activity1">
+      <span class="section-label">Activity 1 • Access</span>
+      <h2>Grade 7 ELA — Access the Text</h2>
+      <div class="section-rule"></div>
+
+      <div class="instruction"><strong>First:</strong> Read the passage without using Read&amp;Write. Notice where decoding, vocabulary, or processing begins to compete with comprehension.</div>
+
+      <div class="reading">
+        As cities expand, pavement and rooftops replace soil and vegetation. These hard surfaces absorb heat and prevent rainwater from soaking naturally into the ground. During intense storms, runoff can overwhelm drainage systems and carry pollutants into streams. Some communities respond by installing green roofs—layers of plants grown on specially designed rooftops. The vegetation can moderate rooftop temperatures, retain a portion of rainfall, and provide habitat. Green roofs require appropriate building support, maintenance, and an initial investment. Even so, planners may consider them one strategy for making densely developed areas more resilient to heat and heavy rainfall.
+      </div>
+
+      <div class="tool-row" aria-label="Read and Write tools to try">
+        <span class="tool-chip">▶ Play</span>
+        <span class="tool-chip">⏸ Pause</span>
+        <span class="tool-chip">Dictionary</span>
+        <span class="tool-chip">Picture Dictionary</span>
+      </div>
+
+      <div class="word-bank"><strong>Words to explore:</strong> overwhelm • pollutants • moderate • retain • resilient</div>
+
+      <div class="leadership"><strong>Leadership Lens:</strong> What changed — the standard, the text, or the student's access to the text?</div>
+    </section>
+
+    <section id="activity2">
+      <span class="section-label">Activity 2 • Organize Thinking</span>
+      <h2>Grade 7 ELA — Compare &amp; Contrast</h2>
+      <div class="section-rule"></div>
+
+      <div class="two-col">
+        <article class="card">
+          <h3>Text A • Start Later</h3>
+          <p>Supporters of later middle-school start times argue that adolescents often have biological sleep patterns that make early sleep difficult. More morning sleep may improve alertness and readiness to learn. However, changing the schedule may affect transportation, athletics, and family routines.</p>
+        </article>
+        <article class="card">
+          <h3>Text B • Keep Current Schedule</h3>
+          <p>Supporters of the current schedule point to practical concerns. Bus routes are coordinated across grade levels, and changing one school's start time can affect transportation. Later dismissal may also reduce time for sports, jobs, or family responsibilities.</p>
+        </article>
+      </div>
+
+      <div class="instruction"><strong>Use Highlighters + Collect Highlights.</strong> Color 1 = shared issue • Color 2 = differences. Then move the collected evidence into the organizer below.</div>
+
+      <div class="three-col">
+        <div>
+          <label for="a-only">Text A Only</label>
+          <textarea id="a-only" aria-label="Text A only notes"></textarea>
+        </div>
+        <div>
+          <label for="both">Both Texts</label>
+          <textarea id="both" aria-label="Both texts notes"></textarea>
+        </div>
+        <div>
+          <label for="b-only">Text B Only</label>
+          <textarea id="b-only" aria-label="Text B only notes"></textarea>
+        </div>
+      </div>
+
+      <div class="response-box">
+        <label for="compare-response">Compare &amp; Contrast Response</label>
+        <p>How do the authors’ positions differ? Use evidence from both texts.</p>
+        <textarea id="compare-response" aria-label="Compare and contrast response"></textarea>
+      </div>
+
+      <div class="leadership"><strong>Leadership Lens:</strong> The technology can gather and organize evidence. The learner still has to analyze, compare, and explain.</div>
+    </section>
+
+    <section id="activity3">
+      <span class="section-label">Activity 3 • Vocabulary to Expression</span>
+      <h2>Grade 5 Social Studies — SS5CG1 / SS5CG1.a</h2>
+      <div class="section-rule"></div>
+
+      <div class="reading">
+        Citizens in a representative democracy have both rights and responsibilities. Voting is one way citizens can participate in the political process, but civic participation also includes learning about issues and communicating with elected leaders. Citizens may be called for jury duty, where they help the justice system provide a fair process. They are also expected to obey laws and contribute to their communities. These responsibilities help a democracy function because government depends on informed and involved citizens.
+      </div>
+
+      <div class="word-bank"><strong>Highlight and build a Vocabulary List:</strong> citizen • responsibility • participate • political process • jury duty • democracy</div>
+
+      <div class="tool-row">
+        <span class="tool-chip">Highlighters</span>
+        <span class="tool-chip">Vocabulary List</span>
+        <span class="tool-chip">Talk&amp;Type</span>
+      </div>
+
+      <div class="response-box">
+        <label for="citizenship-response">Talk&amp;Type Prompt</label>
+        <p>Using at least three words from your vocabulary list, explain one responsibility of a U.S. citizen and why it matters.</p>
+        <textarea id="citizenship-response" aria-label="Citizenship response"></textarea>
+      </div>
+
+      <div class="leadership"><strong>Leadership Lens:</strong> What is the content standard assessing — keyboarding and spelling, or understanding of citizenship?</div>
+    </section>
+
+    <section id="activity4">
+      <span class="section-label">Activity 4 • Complex Academic Language</span>
+      <h2>High School Biology — SB1.b</h2>
+      <div class="section-rule"></div>
+
+      <div class="instruction"><strong>First:</strong> Read the original passage. Then use Rewordify or Simplify and Text-to-Speech. Compare the experience.</div>
+
+      <div class="reading">
+        Before a eukaryotic cell divides, its DNA is replicated so that each chromosome consists of two identical sister chromatids. During mitosis, the duplicated chromosomes are systematically separated into two nuclei. Cytokinesis then partitions the cytoplasm, producing two daughter cells. Because each daughter cell receives a corresponding set of chromosomes, mitosis helps maintain genetic continuity during growth and tissue repair.
+      </div>
+
+      <div class="tool-row">
+        <span class="tool-chip">Rewordify</span>
+        <span class="tool-chip">Simplify</span>
+        <span class="tool-chip">▶ Text-to-Speech</span>
+      </div>
+
+      <div class="leadership"><strong>Leadership Lens:</strong> What became easier to access? What scientific thinking still belongs to the learner?</div>
+    </section>
+
+    <section id="reference">
+      <span class="section-label">Quick Reference</span>
+      <h2>Read&amp;Write Tools Used Today</h2>
+      <div class="section-rule"></div>
+
+      <table>
+        <thead>
+          <tr><th>Tool</th><th>What it supports</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Play / Pause / Stop</td><td>Controls Text-to-Speech so students can listen, visually track print, and pause for processing.</td></tr>
+          <tr><td>Dictionary / Picture Dictionary</td><td>Provides written definitions and visual supports for unfamiliar words.</td></tr>
+          <tr><td>Highlighters / Collect Highlights</td><td>Color-codes and gathers important evidence or notes.</td></tr>
+          <tr><td>Vocabulary List</td><td>Builds a list of selected words with definitions, images when available, and space for notes.</td></tr>
+          <tr><td>Talk&amp;Type</td><td>Converts spoken language into written text.</td></tr>
+          <tr><td>Rewordify / Simplify</td><td>Reduces language complexity and/or reading-page barriers on supported platforms.</td></tr>
+        </tbody>
+      </table>
+
+      <p class="print-note">Tip: This page is intentionally built with selectable webpage text and standard response fields so Read&amp;Write can be demonstrated directly in a browser.</p>
+    </section>
+  </main>
+
+  <footer>
+    <span class="big">Leadership Question</span>
+    How can we make access available, taught, and routine?
+  </footer>
+</div>
+</body>
+</html>
